@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ServerApp</string>
+
+    <string name="server_started">Сервер запущен</string>
+    <string name="server_not_started">Сервер не запущен</string>
+    <string name="start">Запустить</string>
+
+</resources>
