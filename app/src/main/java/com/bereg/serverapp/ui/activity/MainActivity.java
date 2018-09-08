@@ -4,16 +4,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.bereg.serverapp.App;
 import com.bereg.serverapp.R;
 import com.bereg.serverapp.Utils.Screens;
 import com.bereg.serverapp.data.ConnectionService;
+import com.bereg.serverapp.domain.ConnectionInteractor;
+import com.bereg.serverapp.presentation.presenter.InfoPresenter;
 import com.bereg.serverapp.presentation.presenter.MainPresenter;
+import com.bereg.serverapp.presentation.view.MainView;
 import com.bereg.serverapp.ui.fragment.InfoFragment;
 
 import javax.inject.Inject;
@@ -22,16 +28,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.terrakok.cicerone.Navigator;
+import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MvpAppCompatActivity implements MainView{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    MainPresenter mMainPresenter;/* = new MainPresenter(, App.getInstance().getRouter());*/
+    @InjectPresenter
+    MainPresenter mMainPresenter;
+
+    @ProvidePresenter
+    MainPresenter provideMainPresenter() {
+        ConnectionInteractor mConnectionInteractor = App.getAppComponent().getConnectionInteractor();
+        Router router = App.getInstance().getRouter();
+        return new MainPresenter(mConnectionInteractor, router);
+    }
 
     @BindView(R.id.tv_server_state)
-    TextView textView;
+    TextView serverStateTextView;
+    @BindView(R.id.btn_start)
+    Button startButton;
 
     private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(), R.id.fragment_container) {
 
@@ -62,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mMainPresenter = App.getAppComponent().getMainPresenter();
-        //mMainPresenter.onAttachView(this);
+        //mMainPresenter = App.getAppComponent().getMainPresenter();
     }
 
     @Override
@@ -88,7 +104,10 @@ public class MainActivity extends AppCompatActivity {
         mMainPresenter.onStartClicked();
     }
 
-    /*public void setText(String ip) {
-        textView.setText(ip);
-    }*/
+    @Override
+    public void hideWidgets() {
+
+        serverStateTextView.setVisibility(View.GONE);
+        startButton.setVisibility(View.GONE);
+    }
 }

@@ -12,18 +12,21 @@ import com.bereg.serverapp.data.core.communication.MessageWriter;
  */
 
 //Основная логика клиента
-public class ClientSession/* extends Thread */{
+public class ClientSession {
+
     private final Socket socket;
     private final MessageReader reader;
     private final MessageWriter writer;
 
-    public ClientSession(final Socket socket/*, final Context context*/) throws IOException {
+    public ClientSession(final Socket socket) throws IOException {
+
         this.socket = socket;
         this.reader = new MessageReader(socket.getInputStream());
         this.writer = new MessageWriter(socket.getOutputStream());
     }
 
-    public void run() {
+    public void startSession() {
+        
         String msg;
         try {
             msg = reader.readMessage();

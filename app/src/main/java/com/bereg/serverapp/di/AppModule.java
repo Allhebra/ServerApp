@@ -26,8 +26,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ConnectionInteractor provideConnectionInteractor(Server server) {
-        return new ConnectionInteractor(server);
+    ConnectionInteractor provideConnectionInteractor() {
+        return new ConnectionInteractor();
     }
 
     @Provides
@@ -36,9 +36,9 @@ public class AppModule {
         return App.getInstance().getRouter();
     }
 
-    @Provides
+    /*@Provides
     @Singleton
     Server provideServer() {
         return new Server();
-    }
+    }*/
 }

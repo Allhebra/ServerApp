@@ -36,19 +36,10 @@ public class ConnectionService extends IntentService {
         Log.e(TAG, "ConnectionService");
     }
 
-    /**
-     * Starts this service to perform action Foo with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionFoo(Context context/*, String param1, String param2*/) {
+    public static void startActionFoo(Context context) {
         Log.e(TAG, "startActionFoo in");
         Intent intent = new Intent(context, ConnectionService.class);
         intent.setAction(ACTION_FOO);
-        //intent.putExtra(EXTRA_PARAM1, param1);
-        //intent.putExtra(EXTRA_PARAM2, param2);
         context.startService(intent);
         Log.e(TAG, "startActionFoo out");
     }
@@ -76,9 +67,7 @@ public class ConnectionService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_FOO.equals(action)) {
                 Log.e(TAG, "ACTION_FOO");
-                //final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                //final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(/*param1, param2*/);
+                handleActionFoo();
             } else if (ACTION_BAZ.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
                 final String param2 = intent.getStringExtra(EXTRA_PARAM2);
@@ -87,13 +76,8 @@ public class ConnectionService extends IntentService {
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionFoo(/*String param1, String param2*/) {
-        // TODO: Handle action Foo
-        //throw new UnsupportedOperationException("Not yet implemented");
+    private void handleActionFoo() {
+
         try {
             Log.e(TAG, "handleActionFoo in");
             mConnectionInteractor.startServer();
